@@ -27,13 +27,20 @@ public class MemberController {
 		// jsp 페이지 호출
 		return "member/signup";
 	}
+	
 	@Autowired
 	private MemberService memberservice;
+	
 	@PostMapping("/nickCheck")
 	@ResponseBody
 	public int nickCheck(@RequestParam("nick") String nick) {
 		int cnt = memberservice.nickCheck(nick);
 		return cnt;
 	}
+	
+//	@PostMapping("/join")
+//	public String join() {
+//		return null;
+//	}
 
 }

@@ -1,8 +1,7 @@
-package com.CustomSoft.Member;
+package com.CustomSoft.Dto;
 
-import java.sql.Date;
 
-public class MembetDTO {
+public class MemberDTO {
 	private String name;
 	private String nick;
 	private String email;
@@ -10,7 +9,6 @@ public class MembetDTO {
 	private String birth;
 	private String phone;
 	private String address;
-	private Date reg_date;
 	public String getName() {
 		return name;
 	}
@@ -52,12 +50,6 @@ public class MembetDTO {
 	}
 	public void setAddress(String address) {
 		this.address = address;
-	}
-	public Date getReg_date() {
-		return reg_date;
-	}
-	public void setReg_date(Date reg_date) {
-		this.reg_date = reg_date;
 	}
 	
 	

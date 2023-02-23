@@ -1,9 +1,12 @@
 package com.CustomSoft.Service;
 
-public interface MemberService {
-	public int nickCheck(String id);
-	
+import java.util.Map;
 
+
+public interface MemberService {
+	public int nickCheck(String nick);
+	
+	public void join(Map<Object, Object> map) throws Exception;
 		
 		
 	

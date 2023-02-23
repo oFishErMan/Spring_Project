@@ -173,16 +173,16 @@
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control" id="nick" name="nick"
-								placeholder="Nick" oninput="checkNick()">
+								placeholder="Nick" oninput="nickCheck()">
 							<span class="nick_ok">&nbsp;&nbsp;사용 가능한 아이디입니다.</span>
 							<span class="nick_already">&nbsp;&nbsp;사용 불가능한 아이디입니다.</span>
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" id="pwd" name="pwd"
+							<input type="password" class="form-control" id="pwd" name="pwd"
 								placeholder="Pswd">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" id="repeatpwd"
+							<input type="password" class="form-control" id="repeatpwd"
 								name="repeatpwd" placeholder="ReapeatPwd">
 						</div>
 						<div class="form-group">
@@ -191,18 +191,18 @@
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control" id="birth" name="birth"
-								placeholder="Birth">
+								placeholder="Birth" oninput="oninputBirth(this)" maxlength="10">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" id="phone" name="phone"
-								placeholder="Phone">
+							<input type="text" class="form-control" id="phone" name="phone" 
+								placeholder="Phone" maxlength="13" oninput="oninputPhone(this)">
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control" id="addr" name="addr"
 								placeholder="Addr">
 						</div>
 						<input type="button" class="btn btn-primary btn-block" value="join"
-							onclick="join()"></input>
+							id="join-btn" onclick="join()"></input>
 					</div>
 				</div>
 			</div>
