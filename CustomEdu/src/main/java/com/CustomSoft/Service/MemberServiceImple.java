@@ -23,8 +23,11 @@ public class MemberServiceImple implements MemberService {
 
 	@Override
 	public void join(Map<Object, Object> map) throws Exception {
-		 mapper.join(map);
-		
+		int i =0;
+		System.out.println("service");
+
+		mapper.join(map);
+		//return i;
 	}
 	
 

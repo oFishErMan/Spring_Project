@@ -10,32 +10,33 @@
 	, save:*/
 function join() {
 	alert("signup의 save 함수 호출");
-	
+
 	var birth1 = $('#birth').val();
-	var phone1 = $('#phone').val(); 
+	var phone1 = $('#phone').val();
 	var user = {
 		name: $('#name').val(),
 		nick: $('#nick').val(),
 		pwd: $('#pwd').val(),
 		repeatpwd: $('#repeatpwd').val(),
 		email: $('#email').val(),
-		birth: birth1.replace(/-/g,''),
-		phone: phone1.replace(/-/g,''),
+		birth: birth1.replace(/-/g, ''),
+		phone: phone1.replace(/-/g, ''),
 		addr: $('#addr').val()
 	};
 	console.log(user);
+	
 	$.ajax({
 		url: '/join',
 		type: 'post',
 		data: JSON.stringify(user),
 		contentType: 'application/json; charset=utf-8',
-		dataType: 'JSON'
-	}).done(function(resp) {
-		alert("회원가입이 완료되었습니다.");
-		console.log(resp)
-		location.href = '/login;'
-	}).fail(function(error) {
-		alert(JSON.stringify(error));
+		success: function() {
+			alert("회원가입이 완료되었습니다.");
+			location.href = '/login'
+		},
+		error: function(error) {
+			console.log("fail");
+		}
 	});
 
 }
