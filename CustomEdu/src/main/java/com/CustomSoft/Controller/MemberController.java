@@ -8,13 +8,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.CustomSoft.Mapper.MemberMapper;
 import com.CustomSoft.Service.MemberService;
+import com.CustomSoft.db.vo.MemberVO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/member/*")
 public class MemberController {
 	
+
 	
-	@RequestMapping(value = "/login", method=RequestMethod.GET)
+	MemberVO member ;
+	
+	@Autowired
+	private MemberService memberservice;
+	
+	@Autowired
+	private MemberMapper membermapper;
+	
+	@RequestMapping(value = "login", method= {RequestMethod.GET, RequestMethod.POST})
 	public String Login() {
 		// jsp 페이지 호출
 		return "member/login";
@@ -22,25 +37,42 @@ public class MemberController {
 	
 	
 	
-	@RequestMapping(value = "/signup", method=RequestMethod.GET)
+	@RequestMapping(value = "signup", method=RequestMethod.GET)
 	public String Signup() {
 		// jsp 페이지 호출
 		return "member/signup";
 	}
 	
-	@Autowired
-	private MemberService memberservice;
 	
-	@PostMapping("/nickCheck")
+	
+	@PostMapping("nickCheck")
 	@ResponseBody
 	public int nickCheck(@RequestParam("nick") String nick) {
 		int cnt = memberservice.nickCheck(nick);
 		return cnt;
 	}
 	
-//	@PostMapping("/join")
-//	public String join() {
-//		return null;
-//	}
+	@PostMapping("signIn")
+	public String loginCheck(MemberVO vo, HttpServletRequest req) {
+		
+		/* boolean result = MemberService. */
+		HttpSession session = req.getSession();
+		MemberVO signIn = membermapper.signIn(vo);
+		if (signIn != null) {
+			session.setAttribute("signIn", signIn);
+			return "redirect:/index";
+		} else {
+			session.setAttribute("signIn", null);
+			return "redirect:/login";
+		}
+	}
+	
+	@RequestMapping("logout")
+	public String logOut(HttpSession session) {
+		session.invalidate();
+		return "redirect:/login";
+	}
+	
+
 
 }

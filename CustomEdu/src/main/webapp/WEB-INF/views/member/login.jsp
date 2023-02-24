@@ -34,14 +34,16 @@
 								<div class="logo text-center"><img src="assets/img/logo-dark.png" alt="Klorofil Logo"></div>
 								<p class="lead">Login to your account</p>
 							</div>
-							<form class="form-auth-small" action="index.php">
+							<form class="form-auth-small" action="${cpath}/signIn} method="post">
 								<div class="form-group">
 									<label for="signin-email" class="control-label sr-only">Email</label>
-									<input type="email" class="form-control" id="signin-email" value="samuel.gold@domain.co" placeholder="Email">
+									<input type="email" class="form-control" id="signin-email" value="samuel.gold@domain.co" 
+										placeholder="Email" required="required" autofocus="autofocus">
 								</div>
 								<div class="form-group">
 									<label for="signin-password" class="control-label sr-only">Password</label>
-									<input type="password" class="form-control" id="signin-password" value="thisisthepassword" placeholder="Password">
+									<input type="password" class="form-control" id="signin-password" value="thisisthepassword" 
+										required="required" placeholder="Password">
 								</div>
 								<div class="form-group clearfix">
 									<label class="fancy-checkbox element-left">
