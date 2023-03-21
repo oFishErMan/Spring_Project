@@ -5,15 +5,16 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.CustomSoft.db.vo.MemberVO;
-
 
 @Mapper
 public interface MemberMapper {
+	//회원가입 중 닉네임 중복체크
 	public int nickCheck(String nick);
 
+	//회원가입
 	public void join(Map<Object, Object> map) throws Exception;
 	
-	public MemberVO signIn(MemberVO vo);
+	//로그인
+	public int loginCheck(Map<Object, Object> map) throws Exception;
 	
 }

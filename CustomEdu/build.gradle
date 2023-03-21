@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+	//스프링 부트 사용
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
 	
@@ -36,11 +37,15 @@ dependencies {
 	
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.3'    /* Validation */
 	
+	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	implementation 'commons-io:commons-io:2.11.0'    /* Apache commons-io */
+	implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4' /* Apache Commons FileUpload */
 }
 
 tasks.named('test') {

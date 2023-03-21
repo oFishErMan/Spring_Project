@@ -2,21 +2,38 @@ package com.CustomSoft.Service;
 
 import java.util.Map;
 
-import com.CustomSoft.db.vo.MemberVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.CustomSoft.Mapper.MemberMapper;
 
 import jakarta.servlet.http.HttpSession;
 
+@Service
+public class MemberService {
+	
+	@Autowired
+	private MemberMapper mapper;
 
-public interface MemberService {
-	public int nickCheck(String nick);
-	
-	public void join(Map<Object, Object> map) throws Exception;
-		
-	
-	public MemberVO viewMember(MemberVO vo);
+	//닉네임 중복 체크
+	public int nickCheck(String nick) {
+		int cnt = mapper.nickCheck(nick);
+		return cnt;
+	}
 
-	boolean loginCheck(MemberVO vo, HttpSession session);	
-	
-	public void logOut(HttpSession session);
-	
+	//회원가입
+	public void join(Map<Object, Object> map) throws Exception {
+		mapper.join(map);
+	}
+
+	//로그인
+	public int loginCheck(Map<Object, Object> map, HttpSession session) throws Exception {
+		int cnt = mapper.loginCheck(map);
+		return cnt;
+	}
+	//로그아웃
+	public void logOut(HttpSession session) {
+		session.invalidate();
+	}
+
 }

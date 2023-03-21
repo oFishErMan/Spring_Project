@@ -8,98 +8,90 @@
 		});
 	}
 	, save:*/
-function join() {
-	alert("signup의 save 함수 호출");
 
-	var birth1 = $('#birth').val();
-	var phone1 = $('#phone').val();
+
+//회원가입
+function join() {
+
+
+	var custom_user_birth1 = $('#birth').val();
+	var custom_user_phone1 = $('#phone').val();
 	var user = {
-		name: $('#name').val(),
-		nick: $('#nick').val(),
-		pwd: $('#pwd').val(),
-		repeatpwd: $('#repeatpwd').val(),
-		email: $('#email').val(),
-		birth: birth1.replace(/-/g, ''),
-		phone: phone1.replace(/-/g, ''),
-		addr: $('#addr').val()
+		custom_user_name: $('#name').val(),
+		custom_user_nick: $('#nick').val(),
+		custom_user_pswd: $('#pwd').val(),
+		custom_user_repeatpwd: $('#repeatpwd').val(),
+		custom_user_email: $('#email').val(),
+		custom_user_birth: custom_user_birth1.replace(/-/g, ''),
+		custom_user_phone: custom_user_phone1.replace(/-/g, ''),
+		custom_user_address: $('#addr').val()
 	};
 	console.log(user);
-	
-	$.ajax({
-		url: '/join',
-		type: 'post',
-		data: JSON.stringify(user),
-		contentType: 'application/json; charset=utf-8',
-		success: function() {
-			alert("회원가입이 완료되었습니다.");
-			location.href = '/login'
-		},
-		error: function(error) {
-			console.log("fail");
-		}
-	});
+	if (user.custom_user_pswd != user.custom_user_repeatpwd) {
+
+	} else {
+		$.ajax({
+			url: 'join',
+			type: 'post',
+			data: JSON.stringify(user),
+			contentType: 'application/json; charset=utf-8',
+			success: function() {
+				alert("회원가입이 완료되었습니다.");
+				location.href = '/login'
+			},
+			error: function(error) {
+				alert("에러");
+			}
+		});
+	}
+
+
 
 }
 
 
+//로그인
+function signIn() {
 
-/*$('#join-btn').on('click',function()  {
-	console.log("join()실행")
-	var user = new Object();
-	var infoChk = 0;
+	var user = {
+		custom_user_pswd: $('#signin-pwd').val(),
+		custom_user_email: $('#signin-email').val()
+	};
+	console.log(user);
 
-	user.name = $('#name').val();
-	user.nick = $('#nick').val();
-	user.pwd = $('#pwd').val();
-	user.repeatpwd = $('#repeatpwd').val();
-	user.email = $('#email').val();
-	user.birth = $('#birth').val();
-	user.phone = $('#phone').val();
-	user.addr = $('#addr').val();
-	let reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;//특수문자 확인
-	let reg2 = /^[A-Za-z0-9]{1,30}$/; //글자수 확인
+	$.ajax({
+		url: 'signIn',
+		type: 'get',
+		data: user,
+		dataType: 'json',
+		contentType: 'application/json; charset=utf-8',
+		success: function(cnt) {
+			if (cnt == 0) {
+				alert("아이디 혹은 비밀번호를 다시 확인해주세요.")
+				console.log(cnt + ' ' + user);
 
-	if (reg.test(nick)) {
-		alert("닉네임을 확인해주세요.")
-		infoChk = 1;
-	}
-	if (!reg2.test(nick)) {
-		alert("닉네임을 확인해주세요.")
-		infoChk = 1;
-	}
+			} else {
+				alert("로그인이 완료되었습니다.");
+				location.href = '../index';
+				console.log(cnt);
+			}
 
-	if (pwd != repeatpwd) {
-		alert("비밀번호 재입력을 확인해주세요")
-		infoChk = 1;
-	}
+		},
+		error: function(error) {
+			alert("login 함수 에러");
+		}
+	});
 
-	if (infoChk == 0) {
-		$.ajax({
-			url: '/joinInsert',
-			type: 'post',
-			data: {
-				nick: user.nick,
-				name: user.name,
-				email: user.email,
-				pwd: user.pwd,
-				birth: user.birth,
-				phone: user.phone,
-				addr: user.addr,
-				auth: 2
-			},
-			dataType : 'JSON',
-			contentType : "application/json; charset=utf-8"
-			success: function(cnt) {
-				
-			}).fail(function() {
-				alert("에러입니다.")
-			});
-		});
+}
+/*function loginSessionCheck() {
+	if (cnt == 0) {
+		$('.login_ok').css("display");
+		$('.nick_already').css("display");
 	} else {
-		alert("개인 정보를 다시 확인해주세요.")
+		$('.nick_already').css("display");
+		$('.nick_ok').css("display",);
+		$('#nick').val('');
 	}
-
-
 }*/
 
 //닉네임 유효성 검사
@@ -116,7 +108,7 @@ function nickCheck() {
 	user.addr = $('#addr').val();
 
 	$.ajax({
-		url: '/nickCheck',
+		url: 'nickCheck', //member Cont 연결
 		type: 'post',
 		data: { nick: user.nick },
 		success: function(cnt) {

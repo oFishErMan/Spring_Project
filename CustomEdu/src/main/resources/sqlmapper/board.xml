@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.CustomSoft.Mapper.BoardMapper">
+	<!-- 게시판 카운팅 -->
+	<select id="countBoard" resultType="int">
+		select count(*) from
+		general_board
+		<if test="searchBoard != null">
+			where board_title like concat('%', #{searchBoard},'%')
+		</if>
+	</select>
+	<!-- 게시판 출력(페이징O) -->
+	<select id="selectBoard"
+		resultType="com.CustomSoft.db.dto.board.BoardDto"
+		parameterType="com.CustomSoft.db.PagingVo">
+<!-- 		SELECT
+		a.*, b.* as cntReply
+		FROM general_board a, 
+		(
+			select count(*)
+			from general_board_reply
+			where reply_seq = 
+		) -->
+		SELECT a.*, ifnull(b.cntReply,0) AS cntReply, c.board_good as board_good
+		FROM general_board a
+		LEFT JOIN 
+		(
+			select count(*) AS cntReply, reply_seq 
+			from general_board_reply a
+			GROUP BY reply_seq
+		)b ON a.board_seq = b.reply_seq
+		LEFT JOIN general_board_good c on a.board_seq = c.board_seq
+		where a.board_del_yn = 'n'
+		<if test="searchBoard != null">
+		AND a.board_title like concat('%', #{searchBoard},'%')
+		</if>
+		order by a.board_seq
+		LIMIT #{start}, #{cntPerPage};
+	</select>
+	<!-- 게시판 검색 -->
+	<select id="searchBoard" parameterType="String"
+		resultType="com.CustomSoft.db.dto.board.BoardDto">
+		select * from general_board where board_title like
+		concat('%', #{searchBoard},'%')
+	</select>
+	<!-- 게시글 상세 페이지 -->
+	<select id="detailBoard" parameterType="int"
+		resultType="com.CustomSoft.db.dto.board.BoardDto">
+		select a.*, b.board_good as board_good
+		from general_board a , general_board_good b 
+		where a.board_seq = #{board_seq} and
+		 a.board_seq = b.board_seq;
+	</select>
+	<!-- 댓글 불러오기 -->
+	<select id="getReply" parameterType="int" resultType="com.CustomSoft.db.ReplyDto">
+		select * from general_board_reply where reply_seq = #{seq};
+	</select>
+	<!-- 댓글 갯수 카운트 -->
+	<select id="cntReply" parameterType="int" resultType="int">
+		select count(*) from general_board_reply where reply_seq = #{seq}; 
+	</select>
+	
+	<select id="selectSeq" resultType="int">
+		select max(board_seq) from general_board;
+	</select>
+	<!-- 게시판 글쓰기 -->
+	<insert id="addBoard"
+		parameterType="com.CustomSoft.db.dto.board.BoardDto">
+		insert into general_board (board_title, board_writer,
+		board_text, board_reg_date, board_mod_date, board_img_path,
+		board_del_yn)
+		values(#{board_title}, #{board_writer}, #{board_text},
+		NOW(), NOW(), #{board_img_path}, 'n');
+	</insert>
+	
+	<insert id="addReply" parameterType="com.CustomSoft.db.ReplyDto">
+		insert into general_board_reply (reply_seq, reply_writer, reply_text, reply_mod_date)
+		values (#{reply_seq}, #{reply_writer}, #{reply_text}, NOW()); 
+	</insert>
+	
+	<insert id="addGood" parameterType="int">
+		insert into general_board_good values(#{seq},0,0);
+	</insert>
+	
+	<!-- 게시글 삭제(yn -> n) -->
+	<update id="delBoard" parameterType="int">
+		update general_board set
+		board_del_yn = 'y' where board_seq = #{board_seq};
+	</update>
+
+	<!-- 게시글 수정 -->
+	<update id="modifyBoard"
+		parameterType="map">
+		update general_board set board_title = #{board_title},
+		board_text = #{board_text}, board_mod_date = NOW() 
+		where board_seq = #{board_seq};
+	</update>
+	
+	<update id="incView" parameterType="int">
+		update general_board set board_view = board_view +1 where board_seq = #{seq}; 
+	</update>
+	
+	<update id="incGood" parameterType="int">
+		update general_board_good set board_good = board_good +1, board_email = #{board_email} where board_seq = #{seq}; 
+	</update>
+	
+</mapper>
